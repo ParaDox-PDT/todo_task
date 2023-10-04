@@ -1,36 +1,43 @@
 part of 'to_do_bloc.dart';
 
-@immutable
+
 abstract class ToDoEvent extends Equatable{}
 
-class AddToDo extends ToDoEvent {
+class AddToDoEvent extends ToDoEvent {
   final ToDoModel newToDo;
 
-  AddToDo({required this.newToDo});
+  AddToDoEvent({required this.newToDo});
 
   @override
   List<Object?> get props => [newToDo];
 }
 
-class GetToDos extends ToDoEvent {
+class GetToDosEvent extends ToDoEvent {
   @override
   List<Object?> get props => [];
 }
 
-class UpdateToDo extends ToDoEvent {
+class GetToDosByDateEvent extends ToDoEvent {
+  final String date;
+  GetToDosByDateEvent({required this.date});
+  @override
+  List<Object?> get props => [date];
+}
+
+class UpdateToDoEvent extends ToDoEvent {
   final ToDoModel updatedToDo;
   final int id;
 
-  UpdateToDo({required this.updatedToDo,required this.id});
+  UpdateToDoEvent({required this.updatedToDo,required this.id});
 
   @override
   List<Object?> get props => [updatedToDo,id];
 }
 
-class DeleteToDo extends ToDoEvent {
+class DeleteToDoEvent extends ToDoEvent {
   final int id;
 
-  DeleteToDo({required this.id});
+  DeleteToDoEvent({required this.id});
 
   @override
   List<Object?> get props => [id];

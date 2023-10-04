@@ -1,6 +1,6 @@
 part of 'to_do_bloc.dart';
 
-@immutable
+
 abstract class ToDoState extends Equatable {}
 
 class ToDoInitial extends ToDoState{
@@ -14,6 +14,11 @@ class ToDoAddState extends ToDoState{
 }
 
 class ToDoUpdateState extends ToDoState{
+  @override
+  List<Object?> get props => [];
+}
+
+class ToDoGetState extends ToDoState{
   @override
   List<Object?> get props => [];
 }
