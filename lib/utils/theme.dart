@@ -5,15 +5,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'colors.dart';
 
 class AppTheme {
-  static ThemeData darkTheme = ThemeData(
-    scaffoldBackgroundColor: AppColors.black,
+  static ThemeData lightTheme = ThemeData(
+    scaffoldBackgroundColor: AppColors.white,
     appBarTheme: const AppBarTheme(
+      scrolledUnderElevation: 0,
       elevation: 0,
-      backgroundColor: AppColors.black,
+      backgroundColor: AppColors.white,
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: AppColors.black,
+        statusBarColor: AppColors.white,
         statusBarBrightness: Brightness.light,
-        statusBarIconBrightness: Brightness.light,
+        statusBarIconBrightness: Brightness.dark,
       ),
     ),
     textTheme: TextTheme(
@@ -22,82 +23,82 @@ class AppTheme {
           color: AppColors.textColor,
           fontSize: 57.sp,
           fontWeight: FontWeight.w800,
-          fontFamily: "Lato"),
+          fontFamily: "Poppins"),
       displayMedium: TextStyle(
           color: AppColors.textColor,
           fontSize: 45.sp,
           fontWeight: FontWeight.w700,
-          fontFamily: "Lato"),
+          fontFamily: "Poppins"),
       displaySmall: TextStyle(
           color: AppColors.textColor,
           fontSize: 36.sp,
           fontWeight: FontWeight.w600,
-          fontFamily: "Lato"),
+          fontFamily: "Poppins"),
       //headline
       headlineLarge: TextStyle(
           color: AppColors.textColor,
           fontSize: 32.sp,
           fontWeight: FontWeight.w700,
-          fontFamily: "Lato"),
+          fontFamily: "Poppins"),
       headlineMedium: TextStyle(
           color: AppColors.textColor,
           fontSize: 28.sp,
           fontWeight: FontWeight.w500,
-          fontFamily: "Lato"),
+          fontFamily: "Poppins"),
       headlineSmall: TextStyle(
           color: AppColors.textColor,
           fontSize: 24.sp,
           fontWeight: FontWeight.w400,
-          fontFamily: "Lato"),
+          fontFamily: "Poppins"),
       //title
       titleLarge: TextStyle(
           color: AppColors.textColor,
           fontSize: 22.sp,
           fontWeight: FontWeight.w700,
-          fontFamily: "Lato"),
+          fontFamily: "Poppins"),
       titleMedium: TextStyle(
           color: AppColors.textColor,
           fontSize: 16.sp,
           fontWeight: FontWeight.w600,
-          fontFamily: "Lato"),
+          fontFamily: "Poppins"),
       titleSmall: TextStyle(
           color: AppColors.textColor,
           fontSize: 14.sp,
           fontWeight: FontWeight.w500,
-          fontFamily: "Lato"),
+          fontFamily: "Poppins"),
       //label
       labelLarge: TextStyle(
           color: AppColors.textColor,
           fontSize: 14.sp,
           fontWeight: FontWeight.w600,
-          fontFamily: "Lato"),
+          fontFamily: "Poppins"),
       labelMedium: TextStyle(
           color: AppColors.textColor,
           fontSize: 12.sp,
           fontWeight: FontWeight.w500,
-          fontFamily: "Lato"),
+          fontFamily: "Poppins"),
       labelSmall: TextStyle(
           color: AppColors.textColor,
           fontSize: 11.sp,
           fontWeight: FontWeight.w500,
-          fontFamily: "Lato"),
+          fontFamily: "Poppins"),
       //body
       bodySmall: const TextStyle(
           color: AppColors.passiveTextColor,
           fontSize: 16,
           fontWeight: FontWeight.w500,
-          fontFamily: "Lato"),
+          fontFamily: "Poppins"),
       bodyMedium: TextStyle(
           color: AppColors.textColor,
           fontSize: 14.sp,
           fontWeight: FontWeight.w500,
-          fontFamily: "Lato"),
+          fontFamily: "Poppins"),
       bodyLarge: TextStyle(
           color: AppColors.textColor,
           fontSize: 12.sp,
           fontWeight: FontWeight.w500,
-          fontFamily: "Lato"),
+          fontFamily: "Poppins"),
     ),
   );
-  static ThemeData lightTheme = ThemeData();
+  static ThemeData darkTheme = ThemeData();
 }

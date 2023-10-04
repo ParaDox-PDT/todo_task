@@ -1,8 +1,7 @@
 
+import 'package:flutter_defualt_project/data/models/to_do_model/to_do_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-
-import '../../models/default_model.dart';
 
 class LocalDatabase{
   static final LocalDatabase getInstance = LocalDatabase._init();
@@ -33,121 +32,55 @@ class LocalDatabase{
   Future _createDB(Database db, int version)async{
     const idType = "INTEGER PRIMARY KEY AUTOINCREMENT";
     const textType = "TEXT NOT NULL";
-    const intType = "INTEGER DEFAULT 0";
+    // const intType = "INTEGER DEFAULT 0";
 
 
     await db.execute('''
-    CREATE TABLE ${DefaultModelFields.defaultTable}(
-    ${DefaultModelFields.id} $idType,
-    ${DefaultModelFields.id} $intType,
-    ${DefaultModelFields.name} $textType,
+     CREATE TABLE ${ToDoModelField.tableName}(
+    ${ToDoModelField.id} $idType,
+    ${ToDoModelField.name} $textType,
+    ${ToDoModelField.description} $textType,
+    ${ToDoModelField.location} $textType,
+    ${ToDoModelField.time} $textType,
+    ${ToDoModelField.priority} $textType
     )
     ''');
   }
 
-  static Future<DefaultModel> insertContact(
-      DefaultModel defaultModel) async {
+  static Future<ToDoModel> insertToDo(
+      ToDoModel toDoModel) async {
     final db = await getInstance.database;
     final int id = await db.insert(
-        DefaultModelFields.defaultTable, defaultModel.toJson());
-    return defaultModel.copyWith(id: id);
+        ToDoModelField.tableName, toDoModel.toJson());
+    return toDoModel.copyWith(id: id);
   }
 
-  static Future<List<DefaultModel>> getAllContacts() async {
-    List<DefaultModel> allInfo = [];
+  static Future<List<ToDoModel>> getAllToDos() async {
+    List<ToDoModel> allToDos = [];
     final db = await getInstance.database;
-    allInfo = (await db.query(DefaultModelFields.defaultTable))
-        .map((e) => DefaultModel.fromJson(e))
-        .toList();
-
-    return allInfo;
-  }
-
-  static Future<List<DefaultModel>> getContactsByAlphabet(
-      String order) async {
-    List<DefaultModel> allToDos = [];
-    final db = await getInstance.database;
-    allToDos = (await db.query(DefaultModelFields.defaultTable,
-        orderBy: "${DefaultModelFields.name} $order"))
-        .map((e) => DefaultModel.fromJson(e))
-        .toList();
-    return allToDos;
-  }
-
-  static updateContactName({required int id, required String name}) async {
-    final db = await getInstance.database;
-    db.update(
-      DefaultModelFields.defaultTable,
-      {DefaultModelFields.name: name},
-      where: "${DefaultModelFields.id} = ?",
-      whereArgs: [id],
-    );
-  }
-
-  static updateInfo({required DefaultModel defaultModel}) async {
-    final db = await getInstance.database;
-    db.update(
-      DefaultModelFields.defaultTable,
-      defaultModel.toJson(),
-      where: "${DefaultModelFields.id} = ?",
-      whereArgs: [defaultModel.id],
-    );
-  }
-
-  static deleteContact(int id) async {
-    final db = await getInstance.database;
-    db.delete(
-      DefaultModelFields.defaultTable,
-      where: "${DefaultModelFields.id} = ?",
-      whereArgs: [id],
-    );
-  }
-
-  static deleteAllInfo() async {
-    final db = await getInstance.database;
-    db.delete(
-      DefaultModelFields.defaultTable,
-    );
-  }
-
-  static Future<List<DefaultModel>> getInfoByLimit(int limit) async {
-    List<DefaultModel> allToDos = [];
-    final db = await getInstance.database;
-    allToDos = (await db.query(DefaultModelFields.defaultTable,
-        limit: limit, orderBy: "${DefaultModelFields.name} ASC"))
-        .map((e) => DefaultModel.fromJson(e))
+    allToDos = (await db.query(ToDoModelField.tableName))
+        .map((e) => ToDoModel.fromJson(e))
         .toList();
 
     return allToDos;
   }
 
-  static Future<DefaultModel?> getSingleContact(int id) async {
-    List<DefaultModel> allInfo = [];
+  static updateToDo({required ToDoModel toDoModel}) async {
     final db = await getInstance.database;
-    allInfo = (await db.query(
-      DefaultModelFields.defaultTable,
-      where: "${DefaultModelFields.id} = ?",
-      whereArgs: [id],
-    ))
-        .map((e) => DefaultModel.fromJson(e))
-        .toList();
-
-    if (allInfo.isNotEmpty) {
-      return allInfo.first;
-    }
-    return allInfo.last;
+    db.update(
+      ToDoModelField.tableName,
+      toDoModel.toJson(),
+      where: "${ToDoModelField.id} = ?",
+      whereArgs: [toDoModel.id],
+    );
   }
 
-  static Future<List<DefaultModel>> getInfoByQuery(String query) async {
-    List<DefaultModel> allInfo = [];
+  static deleteToDo(int id) async {
     final db = await getInstance.database;
-    allInfo = (await db.query(
-      DefaultModelFields.defaultTable,
-      where: "${DefaultModelFields.name} LIKE ?",
-      whereArgs: [query],
-    ))
-        .map((e) => DefaultModel.fromJson(e))
-        .toList();
-    return allInfo;
+    db.delete(
+      ToDoModelField.tableName,
+      where: "${ToDoModelField.id} = ?",
+      whereArgs: [id],
+    );
   }
 }
