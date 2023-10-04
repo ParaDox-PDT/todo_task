@@ -22,43 +22,56 @@ class _HomeScreenState extends State<HomeScreen> {
   List<String> weekdays = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
   late  List<List<String>> lists = [];
   int endDay=30;
+  String monthText="";
   int month=DateTime.now().month;
   _checkMonthDays(int m){
     switch (m){
       case 1:
+        monthText="January";
         endDay = 31;
         break;
       case 2:
+        monthText="February";
         endDay = 28;
         break;
       case 3:
+        monthText="March";
         endDay = 31;
         break;
       case 4:
+        monthText="April";
         endDay = 30;
         break;
       case 5:
+        monthText="May";
         endDay = 31;
         break;
       case 6:
+        monthText="June";
         endDay = 30;
         break;
       case 7:
+        monthText="July";
         endDay = 31;
         break;
       case 8:
+        monthText="August";
         endDay = 31;
         break;
       case 9:
+        monthText="September";
         endDay = 30;
         break;
       case 10:
+        monthText="October";
         endDay = 31;
         break;
       case 11:
+        monthText="November";
         endDay = 30;
         break;
       case 12:
+        monthText="December";
         endDay = 31;
         break;
     }
@@ -186,6 +199,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    _checkMonthDays(month);
+    _checkWeekDays();
     lists = [mon,tue,wed,thu,fri,sat,sun];
     super.initState();
   }
@@ -195,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          month.toString(),
+          monthText,
           style: TextStyle(color: AppColors.textColor),
         ),
         actions: [
@@ -260,12 +275,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 }),
               ],
             ),
-            ElevatedButton(
-                onPressed: () {
-                  _checkWeekDays();
-                  setState(() {});
-                },
-                child: const Text("Button")),
           ],
         ),
       ),
