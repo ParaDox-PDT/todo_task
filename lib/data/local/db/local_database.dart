@@ -31,7 +31,7 @@ class LocalDatabase {
   Future _createDB(Database db, int version) async {
     const idType = "INTEGER PRIMARY KEY AUTOINCREMENT";
     const textType = "TEXT NOT NULL";
-    // const intType = "INTEGER DEFAULT 0";
+    const intType = "INTEGER DEFAULT 0";
 
     await db.execute('''
      CREATE TABLE ${ToDoModelField.tableName}(
@@ -40,7 +40,7 @@ class LocalDatabase {
     ${ToDoModelField.description} $textType,
     ${ToDoModelField.location} $textType,
     ${ToDoModelField.time} $textType,
-    ${ToDoModelField.priority} $textType
+    ${ToDoModelField.priority} $intType
     )
     ''');
   }

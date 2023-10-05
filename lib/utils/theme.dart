@@ -75,7 +75,7 @@ class AppTheme {
       labelMedium: TextStyle(
           color: AppColors.textColor,
           fontSize: 12.sp,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w600,
           fontFamily: "Poppins"),
       labelSmall: TextStyle(
           color: AppColors.textColor,
@@ -83,7 +83,7 @@ class AppTheme {
           fontWeight: FontWeight.w500,
           fontFamily: "Poppins"),
       //body
-      bodySmall: const TextStyle(
+      bodyLarge: const TextStyle(
           color: AppColors.passiveTextColor,
           fontSize: 16,
           fontWeight: FontWeight.w500,
@@ -93,7 +93,7 @@ class AppTheme {
           fontSize: 14.sp,
           fontWeight: FontWeight.w500,
           fontFamily: "Poppins"),
-      bodyLarge: TextStyle(
+      bodySmall: TextStyle(
           color: AppColors.textColor,
           fontSize: 12.sp,
           fontWeight: FontWeight.w500,

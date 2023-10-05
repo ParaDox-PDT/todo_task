@@ -17,7 +17,7 @@ class ToDoModel {
   final String time;
   final String location;
   final String createdAt;
-  final String priority;
+  final int priority;
 
   ToDoModel(
       {required this.name,
@@ -35,7 +35,7 @@ class ToDoModel {
         location: json["location"] as String? ?? "",
         description: json["description"] as String? ?? "",
         createdAt: json["createdAt"] as String? ?? "",
-        priority: json["priority"] as String? ?? "",
+        priority: json["priority"] as int? ?? 0,
         time: json["time"] as String? ?? "");
   }
 
@@ -46,7 +46,7 @@ class ToDoModel {
     String? location,
     String? time,
     String? createdAt,
-    String? priority,
+    int? priority,
   }) {
     return ToDoModel(
         name: name ?? this.name,

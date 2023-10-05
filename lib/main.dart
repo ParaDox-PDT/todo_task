@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_defualt_project/bloc/calendar/calendar_bloc.dart';
 import 'package:flutter_defualt_project/bloc/to_do/to_do_bloc.dart';
 import 'package:flutter_defualt_project/data/local/db/local_database.dart';
 import 'package:flutter_defualt_project/ui/app_routes.dart';
@@ -31,6 +32,9 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider(
             create: (context) => ToDoBloc()
+        ),
+        BlocProvider(
+            create: (context) => CalendarBloc()
         ),
       ],
       child: const MyApp(),
