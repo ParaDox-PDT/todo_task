@@ -23,7 +23,9 @@ class _HomeScreenState extends State<HomeScreen> {
   late  List<List<String>> lists = [];
   int endDay=30;
   String monthText="";
+  int day = DateTime.now().day;
   int month=DateTime.now().month;
+  int year = DateTime.now().year;
   _checkMonthDays(int m){
     switch (m){
       case 1:
@@ -31,8 +33,12 @@ class _HomeScreenState extends State<HomeScreen> {
         endDay = 31;
         break;
       case 2:
+        if(year%400==0 || (year%4==0 && year%100!=0)){
+          endDay = 29;
+        }else{
+          endDay = 28;
+        }
         monthText="February";
-        endDay = 28;
         break;
       case 3:
         monthText="March";
@@ -86,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
     sun.clear();
     for (int i = 1; i <= endDay; i++) {
       if(i==1){
-        switch (DateTime.utc(2023,month,i).weekday) {
+        switch (DateTime.utc(year,month,i).weekday) {
           case 1:
             break;
           case 2:
@@ -128,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       }
       if(i==endDay){
-        switch (DateTime.utc(2023,month,i).weekday) {
+        switch (DateTime.utc(year,month,i).weekday) {
           case 1:
             tue.add(" ");
             wed.add(" ");
@@ -169,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }
 
       }
-      switch (DateTime.utc(2023,month,i).weekday) {
+      switch (DateTime.utc(year,month,i).weekday) {
         case 1:
           mon.add(i.toString());
           break;
@@ -210,12 +216,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          monthText,
+          "$year $monthText",
           style: TextStyle(color: AppColors.textColor),
         ),
         actions: [
           IconButton(onPressed: (){
             if(month==1){
+              year=year-1;
               month=12;
             }else{
               month=month-1;
@@ -228,8 +235,8 @@ class _HomeScreenState extends State<HomeScreen> {
           }, icon:Icon(Icons.arrow_back_ios,color: Colors.black,)),
           IconButton(onPressed: (){
             if(month==12){
+              year=year+1;
               month=1;
-
             }else{
               month=month+1;
             }
@@ -255,12 +262,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ...List.generate(lists[i].length, (index) => ZoomTapAnimation(
                         onTap: (){},
                         child: Container(
-                          margin: EdgeInsets.symmetric(vertical: 4.h),
+                          margin: EdgeInsets.symmetric(vertical: 4.h,),
                           width: 25.w,
                           height: 25.w,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100.r),
-                              border: Border.all(width: 1,color: Colors.black)
+                              border: Border.all(width: 2,color: month==DateTime.now().month && year == DateTime.now().year && lists[i][index]==DateTime.now().day.toString()?Colors.blue:Colors.white)
                           ),
                           child: Center(
                             child: Text(
