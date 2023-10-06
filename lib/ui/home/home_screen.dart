@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_defualt_project/bloc/calendar/calendar_bloc.dart';
+import 'package:flutter_defualt_project/bloc/to_do/to_do_bloc.dart';
+import 'package:flutter_defualt_project/data/models/to_do_model/to_do_model.dart';
 import 'package:flutter_defualt_project/ui/app_routes.dart';
 import 'package:flutter_defualt_project/ui/home/widgets/app_bar.dart';
 import 'package:flutter_defualt_project/ui/home/widgets/calendar.dart';
@@ -19,6 +22,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late List<List<String>> lists = [];
+  late List<ToDoModel> toDos;
+
+  _init()async{
+    setState(() {
+      toDos=BlocProvider.of<ToDoBloc>(context).toDos;
+    });
+  }
 
   @override
   void initState() {
@@ -28,22 +38,29 @@ class _HomeScreenState extends State<HomeScreen> {
         month: BlocProvider.of<CalendarBloc>(context).month));
     BlocProvider.of<CalendarBloc>(context)
         .add(CalendarSelectDateEvent(day: DateTime.now().day));
+    BlocProvider.of<ToDoBloc>(context).add(GetToDosByDateEvent(date: "${BlocProvider.of<CalendarBloc>(context).selectedYear}/${BlocProvider.of<CalendarBloc>(context).selectedMonth}"));
+    _init();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 0,
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: AppColors.white),
+      ),
       body: SafeArea(
           child: BlocConsumer<CalendarBloc, CalendarState>(
         builder: (context, state) {
           return SingleChildScrollView(
-            physics:const BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
               child: Column(
                 children: [
-                 const CustomAppBar(),
+                  const CustomAppBar(),
                   20.ph,
                   CustomCalendar(lists: lists),
                   32.ph,
@@ -78,9 +95,33 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   10.ph,
-                const ToDoItem(title: "Watching Football", subTitle: "Manchester United vs Arsenal (Premiere League)", time: "17:00 - 18:30", priority: 0,location: "Stamford Bridge",),
-                const ToDoItem(title: "Deadline Project UI Website", subTitle: "Profile Page, Cart, and Wishlist.", time: "21:00 - 22:30", priority: 2,),
-                const ToDoItem(title: "Meeting Client (Japan)", subTitle: "Android apps and website online shop", time: "23:15 - 00:45", priority: 1,),
+                  BlocConsumer<ToDoBloc, ToDoState>(
+                    builder: (context, state) {
+                      print(toDos);
+                      return Column(
+                        children: [
+                          ...List.generate(toDos.length, (index) {
+                            ToDoModel toDo = toDos[index];
+                            return ToDoItem(
+                                toDo: toDo,);
+                          }),
+                        ],
+                      );
+                    },
+                    listener: (context, state) {
+                      if(state is ToDoGetState){
+                        setState(() {
+                          _init();
+                        });
+                      }
+                      if(state is ToDoAddState || state is ToDoDeleteState){
+                        BlocProvider.of<ToDoBloc>(context).add(GetToDosByDateEvent(date: "${BlocProvider.of<CalendarBloc>(context).selectedYear}/${BlocProvider.of<CalendarBloc>(context).selectedMonth}"));
+                        setState(() {
+                          _init();
+                        });
+                      }
+                    },
+                  )
                 ],
               ),
             ),
@@ -90,6 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (state is CalendarUpdateState) {
             setState(() {});
           }
+
         },
       )),
     );

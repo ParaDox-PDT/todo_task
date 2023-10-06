@@ -40,6 +40,8 @@ class LocalDatabase {
     ${ToDoModelField.description} $textType,
     ${ToDoModelField.location} $textType,
     ${ToDoModelField.time} $textType,
+    ${ToDoModelField.yearMonth} $textType,
+    ${ToDoModelField.day} $textType,
     ${ToDoModelField.priority} $intType
     )
     ''');
@@ -62,13 +64,14 @@ class LocalDatabase {
     return allToDos;
   }
 
-  static Future<List<ToDoModel>> getToDoByDate(String date) async {
+  static Future<List<ToDoModel>> getToDoByDate(String yearMonth) async {
+    print("HEYYYYY");
     List<ToDoModel> allToDos = [];
     final db = await getInstance.database;
     allToDos = (await db.query(
       ToDoModelField.tableName,
-      where: "${ToDoModelField.createdAt} LIKE ?",
-      whereArgs: [date],
+      where: "${ToDoModelField.yearMonth} LIKE ?",
+      whereArgs: [yearMonth],
     ))
         .map((e) => ToDoModel.fromJson(e))
         .toList();

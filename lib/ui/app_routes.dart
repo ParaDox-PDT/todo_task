@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_defualt_project/data/models/to_do_model/to_do_model.dart';
 import 'package:flutter_defualt_project/ui/home/home_screen.dart';
 import 'package:flutter_defualt_project/ui/splash/splash_screen.dart';
 import 'package:flutter_defualt_project/ui/to_do_add/to_do_add_screen.dart';
@@ -24,7 +25,7 @@ class AppRoutes {
         );
       case RouteNames.detailScreen:
         return MaterialPageRoute(
-          builder: (context) => const DetailScreen(),
+          builder: (context) =>  DetailScreen(toDo:settings.arguments as ToDoModel ,),
         );
       case RouteNames.addScreen:
         return MaterialPageRoute(

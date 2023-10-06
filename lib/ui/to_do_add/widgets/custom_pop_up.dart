@@ -16,7 +16,7 @@ class CustomPopUpMenu extends StatelessWidget {
     return PopupMenuButton<int>(
       itemBuilder: (context) => [
         PopupMenuItem(
-          value: 1,
+          value: 0,
           child: Row(
             children: [
               Container(
@@ -33,7 +33,7 @@ class CustomPopUpMenu extends StatelessWidget {
           ),
         ),
         PopupMenuItem(
-          value: 2,
+          value: 1,
           child: Row(
             children: [
               Container(
@@ -50,7 +50,7 @@ class CustomPopUpMenu extends StatelessWidget {
           ),
         ),
         PopupMenuItem(
-          value: 3,
+          value: 2,
           child: Row(
             children: [
               Container(
@@ -80,9 +80,9 @@ class CustomPopUpMenu extends StatelessWidget {
             Container(
               width: 24.w,
               height: 20.h,
-              color: v == 1
+              color: v == 0
                   ? AppColors.blue.withOpacity(0.2)
-                  : v == 2
+                  : v == 1
                       ? AppColors.orange.withOpacity(0.2)
                       : AppColors.red.withOpacity(0.2),
             ),

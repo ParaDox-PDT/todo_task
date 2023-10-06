@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_defualt_project/bloc/calendar/calendar_bloc.dart';
+import 'package:flutter_defualt_project/bloc/to_do/to_do_bloc.dart';
+import 'package:flutter_defualt_project/data/models/to_do_model/to_do_model.dart';
 import 'package:flutter_defualt_project/ui/to_do_add/widgets/custom_pop_up.dart';
 import 'package:flutter_defualt_project/ui/to_do_add/widgets/location_textfield.dart';
 import 'package:flutter_defualt_project/ui/to_do_add/widgets/text_field.dart';
@@ -25,7 +29,7 @@ class _AddScreenState extends State<AddScreen> {
   TextEditingController timeController = TextEditingController();
   FocusNode timeFocus = FocusNode();
 
-  var timeFormatter = new MaskTextInputFormatter(
+  var timeFormatter = MaskTextInputFormatter(
       mask: '*#:&# - *#:&#',
       filter: {
         "#": RegExp(r'[0-9]'),
@@ -34,7 +38,7 @@ class _AddScreenState extends State<AddScreen> {
       },
       type: MaskAutoCompletionType.lazy);
 
-  int v = 1;
+  int v = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +109,7 @@ class _AddScreenState extends State<AddScreen> {
                       maskFormatter: timeFormatter,
                       controller: timeController,
                       focusNode: timeFocus,
-                      textInputAction: TextInputAction.next,
+                      textInputAction: TextInputAction.done,
                       textInputType: TextInputType.number,
                     ),
                   ],
@@ -114,7 +118,55 @@ class _AddScreenState extends State<AddScreen> {
             ),
           ),
           ZoomTapAnimation(
-            onTap: () {},
+            onTap: () {
+              if (nameController.text.isNotEmpty) {
+                if (!(timeController.text.length < 13)) {
+                  if (timeController.text[0] == "2" &&
+                      int.parse(timeController.text[1]) > 3) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Event time is incorrect!"),
+                      duration: Duration(seconds: 2),
+                    ));
+                  } else if (timeController.text[8] == "2" &&
+                      int.parse(timeController.text[9]) > 3) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Event time is incorrect!"),
+                      duration: Duration(seconds: 2),
+                    ));
+                  } else {
+                    context.read<ToDoBloc>().add(
+                          AddToDoEvent(
+                            newToDo: ToDoModel(
+                                yearMonth:
+                                    "${context.read<CalendarBloc>().selectedYear}/${context.read<CalendarBloc>().selectedMonth}",
+                                day: context
+                                    .read<CalendarBloc>()
+                                    .selectedDay
+                                    .toString(),
+                                name: nameController.text,
+                                location: locationController.text,
+                                description: descriptionController.text,
+                                priority: v,
+                                time: timeController.text),
+                          ),
+                        );
+                    debugPrint(
+                        "ADD EVENT ${ToDoModel(yearMonth: "${context.read<CalendarBloc>().selectedYear}/${context.read<CalendarBloc>().selectedMonth}", day: context.read<CalendarBloc>().selectedDay.toString(), name: nameController.text, location: locationController.text, description: descriptionController.text, priority: v, time: timeController.text)}");
+                  Navigator.pop(context);
+                  }
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text("Event time is empty!"),
+                    duration: Duration(seconds: 2),
+                  ));
+                }
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("Event name is empty!"),
+                  duration: Duration(seconds: 2),
+                ));
+              }
+            },
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
               width: double.infinity,

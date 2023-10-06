@@ -16,6 +16,8 @@ class ToDoBloc extends Bloc<ToDoEvent, ToDoState> {
     on<GetToDosByDateEvent>(_getToDosByDate);
   }
 
+  List<ToDoModel> toDos=[];
+
   _addToDo(AddToDoEvent event,Emitter<ToDoState> emit)async{
     try{
       await LocalDatabase.insertToDo(event.newToDo);
@@ -48,7 +50,7 @@ class ToDoBloc extends Bloc<ToDoEvent, ToDoState> {
   
   _getAllToDos(GetToDosEvent event,Emitter<ToDoState> emit)async{
     try{
-      await LocalDatabase.getAllToDos();
+     toDos = await LocalDatabase.getAllToDos();
       emit(ToDoGetState());
     }catch (e){
       emit(ToDoErrorState(errorText: e.toString()));
@@ -58,11 +60,11 @@ class ToDoBloc extends Bloc<ToDoEvent, ToDoState> {
 
   _getToDosByDate(GetToDosByDateEvent event,Emitter<ToDoState> emit)async{
     try{
-      await LocalDatabase.getToDoByDate(event.date);
+     toDos = await LocalDatabase.getToDoByDate(event.date);
       emit(ToDoGetState());
+      emit(ToDoInitial());
     }catch (e){
       emit(ToDoErrorState(errorText: e.toString()));
     }
-    emit(ToDoInitial());
   }
 }
