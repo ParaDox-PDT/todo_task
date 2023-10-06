@@ -1,7 +1,9 @@
 class AppIcons{
   static const String profile="assets/svg/profile.svg";
   static const String arrowBack="assets/svg/arrow_back.svg";
+  static const String arrowBack2="assets/svg/arrow_back2.svg";
   static const String arrowDown="assets/svg/arrow_down.svg";
+  static const String arrowDown2="assets/svg/arrow_down2.svg";
   static const String arrowNext="assets/svg/arrow_next.svg";
   static const String blueEllipse="assets/svg/blue_ellipse.svg";
   static const String clock="assets/svg/clock.svg";

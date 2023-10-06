@@ -42,8 +42,8 @@ class AppTheme {
           fontFamily: "Poppins"),
       headlineMedium: TextStyle(
           color: AppColors.textColor,
-          fontSize: 28.sp,
-          fontWeight: FontWeight.w500,
+          fontSize: 26.sp,
+          fontWeight: FontWeight.w600,
           fontFamily: "Poppins"),
       headlineSmall: TextStyle(
           color: AppColors.textColor,
