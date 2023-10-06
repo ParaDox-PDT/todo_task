@@ -25,9 +25,12 @@ class CustomPopUpMenu extends StatelessWidget {
                 color: AppColors.blue.withOpacity(0.2),
               ),
               10.pw,
-              Text(
-                "Normal",
-                style: Theme.of(context).textTheme.bodyMedium,
+              Expanded(
+                child: Text(
+                  "Normal",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  overflow: TextOverflow.ellipsis,
+                ),
               )
             ],
           ),
@@ -42,9 +45,12 @@ class CustomPopUpMenu extends StatelessWidget {
                 color: AppColors.orange.withOpacity(0.2),
               ),
               10.pw,
-              Text(
-                "Urgent",
-                style: Theme.of(context).textTheme.bodyMedium,
+              Expanded(
+                child: Text(
+                  "Urgent",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  overflow: TextOverflow.ellipsis,
+                ),
               )
             ],
           ),
@@ -59,9 +65,13 @@ class CustomPopUpMenu extends StatelessWidget {
                 color: AppColors.red.withOpacity(0.2),
               ),
               10.pw,
-              Text(
-                "Very Urgent",
-                style: Theme.of(context).textTheme.bodyMedium,
+              Expanded(
+                child: Text(
+                  "Very Urgent",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
               )
             ],
           ),
@@ -88,6 +98,7 @@ class CustomPopUpMenu extends StatelessWidget {
             ),
             SvgPicture.asset(
               AppIcons.arrowDown2,
+              width: 20.w,
             )
           ],
         ),

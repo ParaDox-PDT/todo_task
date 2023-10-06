@@ -17,6 +17,22 @@ class ToDoBloc extends Bloc<ToDoEvent, ToDoState> {
   }
 
   List<ToDoModel> toDos=[];
+  List<String> normal=[];
+  List<String> urgent=[];
+  List<String> veryUrgent=[];
+  checkPriority({required String date}){
+    normal=[];
+    urgent=[];
+    veryUrgent=[];
+    for (var element in toDos) {
+      if(element.priority==0 && element.yearMonth==date){
+        normal.add(element.day);
+      }else if(element.priority==1 && element.yearMonth==date){
+        urgent.add(element.day);
+      }else if(element.priority==2 && element.yearMonth==date){
+        veryUrgent.add(element.day);
+      }
+    }}
 
   _addToDo(AddToDoEvent event,Emitter<ToDoState> emit)async{
     try{
@@ -60,7 +76,9 @@ class ToDoBloc extends Bloc<ToDoEvent, ToDoState> {
 
   _getToDosByDate(GetToDosByDateEvent event,Emitter<ToDoState> emit)async{
     try{
+      print(event.date);
      toDos = await LocalDatabase.getToDoByDate(event.date);
+     checkPriority(date: event.date);
       emit(ToDoGetState());
       emit(ToDoInitial());
     }catch (e){

@@ -23,12 +23,21 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late List<List<String>> lists = [];
   late List<ToDoModel> toDos;
+  List<ToDoModel> selectedDayToDos=[];
 
-  _init()async{
+  _init() async {
+    selectedDayToDos=[];
     setState(() {
-      toDos=BlocProvider.of<ToDoBloc>(context).toDos;
+      toDos = BlocProvider.of<ToDoBloc>(context).toDos;
+      for (var element in toDos) {
+        if (element.day ==
+            BlocProvider.of<CalendarBloc>(context).selectedDay.toString() && element.yearMonth=="${BlocProvider.of<CalendarBloc>(context).selectedYear}/${BlocProvider.of<CalendarBloc>(context).selectedMonth}") {
+          selectedDayToDos.add(element);
+        }
+      }
     });
   }
+
 
   @override
   void initState() {
@@ -38,7 +47,9 @@ class _HomeScreenState extends State<HomeScreen> {
         month: BlocProvider.of<CalendarBloc>(context).month));
     BlocProvider.of<CalendarBloc>(context)
         .add(CalendarSelectDateEvent(day: DateTime.now().day));
-    BlocProvider.of<ToDoBloc>(context).add(GetToDosByDateEvent(date: "${BlocProvider.of<CalendarBloc>(context).selectedYear}/${BlocProvider.of<CalendarBloc>(context).selectedMonth}"));
+    BlocProvider.of<ToDoBloc>(context).add(GetToDosByDateEvent(
+        date:
+            "${BlocProvider.of<CalendarBloc>(context).selectedYear}/${BlocProvider.of<CalendarBloc>(context).selectedMonth}"));
     _init();
     super.initState();
   }
@@ -49,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         toolbarHeight: 0,
         systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: AppColors.white),
+            const SystemUiOverlayStyle(statusBarIconBrightness: Brightness.dark,statusBarColor: AppColors.white),
       ),
       body: SafeArea(
           child: BlocConsumer<CalendarBloc, CalendarState>(
@@ -73,7 +84,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       ZoomTapAnimation(
                         onTap: () {
-                          Navigator.pushNamed(context, RouteNames.addScreen);
+                          Navigator.pushNamed(context, RouteNames.addScreen,
+                              arguments: {"isEditScreen": false});
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(
@@ -97,25 +109,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   10.ph,
                   BlocConsumer<ToDoBloc, ToDoState>(
                     builder: (context, state) {
-                      print(toDos);
                       return Column(
                         children: [
-                          ...List.generate(toDos.length, (index) {
-                            ToDoModel toDo = toDos[index];
+                          ...List.generate(selectedDayToDos.length, (index) {
+                            ToDoModel toDo = selectedDayToDos[index];
                             return ToDoItem(
-                                toDo: toDo,);
+                              toDo: toDo,
+                            );
                           }),
                         ],
                       );
                     },
                     listener: (context, state) {
-                      if(state is ToDoGetState){
+                      if (state is ToDoGetState) {
                         setState(() {
                           _init();
                         });
                       }
-                      if(state is ToDoAddState || state is ToDoDeleteState){
-                        BlocProvider.of<ToDoBloc>(context).add(GetToDosByDateEvent(date: "${BlocProvider.of<CalendarBloc>(context).selectedYear}/${BlocProvider.of<CalendarBloc>(context).selectedMonth}"));
+                      if (state is ToDoAddState ||
+                          state is ToDoDeleteState ||
+                          state is ToDoUpdateState) {
+                        BlocProvider.of<ToDoBloc>(context).add(GetToDosByDateEvent(
+                            date:
+                                "${BlocProvider.of<CalendarBloc>(context).selectedYear}/${BlocProvider.of<CalendarBloc>(context).selectedMonth}"));
                         setState(() {
                           _init();
                         });
@@ -130,6 +146,9 @@ class _HomeScreenState extends State<HomeScreen> {
         listener: (context, state) {
           if (state is CalendarUpdateState) {
             setState(() {});
+            BlocProvider.of<ToDoBloc>(context).add(GetToDosByDateEvent(
+                date:
+                "${BlocProvider.of<CalendarBloc>(context).year}/${BlocProvider.of<CalendarBloc>(context).month}"));
           }
 
         },

@@ -13,7 +13,10 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class AddScreen extends StatefulWidget {
-  const AddScreen({super.key});
+  const AddScreen({super.key, required this.isEditScreen, this.toDoModel});
+
+  final bool isEditScreen;
+  final ToDoModel? toDoModel;
 
   @override
   State<AddScreen> createState() => _AddScreenState();
@@ -40,6 +43,22 @@ class _AddScreenState extends State<AddScreen> {
 
   int v = 0;
 
+  _init() {
+    nameController.text = widget.toDoModel!.name;
+    descriptionController.text = widget.toDoModel!.description;
+    locationController.text = widget.toDoModel!.location ?? "";
+    timeController.text = widget.toDoModel!.time;
+    v = widget.toDoModel!.priority;
+  }
+
+  @override
+  void initState() {
+    if (widget.isEditScreen) {
+      _init();
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +72,7 @@ class _AddScreenState extends State<AddScreen> {
             icon: Icon(
               Icons.arrow_back,
               color: AppColors.gray_900,
-              size: 30.sp,
+              size: 20.sp,
             )),
       ),
       body: Column(
@@ -123,47 +142,65 @@ class _AddScreenState extends State<AddScreen> {
                 if (!(timeController.text.length < 13)) {
                   if (timeController.text[0] == "2" &&
                       int.parse(timeController.text[1]) > 3) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("Event time is incorrect!"),
-                      duration: Duration(seconds: 2),
+                    ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                      content: Text("Event time is incorrect!",style: TextStyle(fontSize: 10.sp),),
+                      duration: const Duration(seconds: 2),
                     ));
                   } else if (timeController.text[8] == "2" &&
                       int.parse(timeController.text[9]) > 3) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("Event time is incorrect!"),
-                      duration: Duration(seconds: 2),
+                    ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                      content: Text("Event time is incorrect!",style: TextStyle(fontSize: 10.sp),),
+                      duration: const Duration(seconds: 2),
                     ));
                   } else {
-                    context.read<ToDoBloc>().add(
-                          AddToDoEvent(
-                            newToDo: ToDoModel(
-                                yearMonth:
-                                    "${context.read<CalendarBloc>().selectedYear}/${context.read<CalendarBloc>().selectedMonth}",
-                                day: context
-                                    .read<CalendarBloc>()
-                                    .selectedDay
-                                    .toString(),
-                                name: nameController.text,
-                                location: locationController.text,
-                                description: descriptionController.text,
-                                priority: v,
-                                time: timeController.text),
-                          ),
-                        );
-                    debugPrint(
-                        "ADD EVENT ${ToDoModel(yearMonth: "${context.read<CalendarBloc>().selectedYear}/${context.read<CalendarBloc>().selectedMonth}", day: context.read<CalendarBloc>().selectedDay.toString(), name: nameController.text, location: locationController.text, description: descriptionController.text, priority: v, time: timeController.text)}");
-                  Navigator.pop(context);
+                    widget.isEditScreen
+                        ? context.read<ToDoBloc>().add(
+                              UpdateToDoEvent(
+                                  updatedToDo: ToDoModel(
+                                      yearMonth:
+                                          "${context.read<CalendarBloc>().selectedYear}/${context.read<CalendarBloc>().selectedMonth}",
+                                      day: context
+                                          .read<CalendarBloc>()
+                                          .selectedDay
+                                          .toString(),
+                                      name: nameController.text,
+                                      location: locationController.text,
+                                      description: descriptionController.text,
+                                      priority: v,
+                                      time: timeController.text),
+                                  id: widget.toDoModel!.id!),
+                            )
+                        : context.read<ToDoBloc>().add(
+                              AddToDoEvent(
+                                newToDo: ToDoModel(
+                                    yearMonth:
+                                        "${context.read<CalendarBloc>().selectedYear}/${context.read<CalendarBloc>().selectedMonth}",
+                                    day: context
+                                        .read<CalendarBloc>()
+                                        .selectedDay
+                                        .toString(),
+                                    name: nameController.text,
+                                    location: locationController.text,
+                                    description: descriptionController.text,
+                                    priority: v,
+                                    time: timeController.text),
+                              ),
+                            );
+                    if(widget.isEditScreen){
+                      Navigator.pop(context);
+                    }
+                    Navigator.pop(context);
                   }
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("Event time is empty!"),
-                    duration: Duration(seconds: 2),
+                  ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                    content: Text("Event time is empty!",style: TextStyle(fontSize: 10.sp),),
+                    duration:const Duration(seconds: 2),
                   ));
                 }
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text("Event name is empty!"),
-                  duration: Duration(seconds: 2),
+                ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                  content: Text("Event name is empty!",style: TextStyle(fontSize: 10.sp),),
+                  duration: const Duration(seconds: 2),
                 ));
               }
             },
@@ -176,11 +213,11 @@ class _AddScreenState extends State<AddScreen> {
               padding: EdgeInsets.symmetric(vertical: 14.h),
               child: Center(
                 child: Text(
-                  "Add",
+                  widget.isEditScreen ? "Update" : "Add",
                   style: Theme.of(context)
                       .textTheme
                       .bodyLarge!
-                      .copyWith(color: AppColors.white),
+                      .copyWith(color: AppColors.white,fontSize: 10.sp),
                 ),
               ),
             ),

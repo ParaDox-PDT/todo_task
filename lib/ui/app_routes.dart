@@ -25,15 +25,23 @@ class AppRoutes {
         );
       case RouteNames.detailScreen:
         return MaterialPageRoute(
-          builder: (context) =>  DetailScreen(toDo:settings.arguments as ToDoModel ,),
+          builder: (context) =>
+              DetailScreen(toDo: settings.arguments as ToDoModel,),
         );
       case RouteNames.addScreen:
         return MaterialPageRoute(
-          builder: (context) => const AddScreen(),
+          builder: (context) {
+            Map<String,dynamic> map = settings.arguments as Map<String,dynamic>;
+            if(map["isEditScreen"]){
+              return AddScreen(isEditScreen:map["isEditScreen"],toDoModel: map["toDo"], );
+            }
+            return AddScreen(isEditScreen:map["isEditScreen"] );
+          },
         );
       default:
         return MaterialPageRoute(
-          builder: (context) => const Scaffold(
+          builder: (context) =>
+          const Scaffold(
             body: Center(
               child: Text("Route not found!"),
             ),

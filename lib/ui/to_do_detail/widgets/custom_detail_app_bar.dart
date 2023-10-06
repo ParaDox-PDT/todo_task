@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_defualt_project/data/models/to_do_model/to_do_model.dart';
+import 'package:flutter_defualt_project/ui/app_routes.dart';
 import 'package:flutter_defualt_project/utils/colors.dart';
 import 'package:flutter_defualt_project/utils/extension.dart';
 import 'package:flutter_defualt_project/utils/icons.dart';
@@ -23,8 +24,8 @@ class CustomDetailAppBar extends StatelessWidget {
           color: toDo.priority == 0
               ? AppColors.blue
               : toDo.priority == 1
-              ? AppColors.orange
-              : AppColors.red),
+                  ? AppColors.orange
+                  : AppColors.red),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -41,14 +42,20 @@ class CustomDetailAppBar extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: AppColors.white,
                       borderRadius: BorderRadius.circular(100.r)),
-                  child: SvgPicture.asset(AppIcons.arrowBack2),
+                  child: SvgPicture.asset(AppIcons.arrowBack2,width: 20.w),
                 ),
               ),
               ZoomTapAnimation(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    RouteNames.addScreen,
+                    arguments: {"isEditScreen": true, "toDo": toDo},
+                  );
+                },
                 child: Row(
                   children: [
-                    SvgPicture.asset(AppIcons.edit),
+                    SvgPicture.asset(AppIcons.edit,width: 20.w),
                     Text(
                       "Edit",
                       style: Theme.of(context)
@@ -81,7 +88,7 @@ class CustomDetailAppBar extends StatelessWidget {
           12.ph,
           Row(
             children: [
-              SvgPicture.asset(AppIcons.clock),
+              SvgPicture.asset(AppIcons.clock,width: 20.w,),
               4.pw,
               Text(
                 toDo.time,
@@ -93,11 +100,11 @@ class CustomDetailAppBar extends StatelessWidget {
             ],
           ),
           12.ph,
-          toDo.location == null
+          toDo.location!.isEmpty
               ? const SizedBox()
               : Row(
                   children: [
-                    SvgPicture.asset(AppIcons.location),
+                    SvgPicture.asset(AppIcons.location,width: 20.w),
                     4.pw,
                     Text(
                       toDo.location!,

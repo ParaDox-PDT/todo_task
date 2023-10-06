@@ -36,9 +36,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
         ),
         const Spacer(),
         IconButton(
+          iconSize: 20.sp,
             splashRadius: 16.r,
             onPressed: () {},
-            icon: SvgPicture.asset(AppIcons.notification))
+            icon: SvgPicture.asset(AppIcons.notification,width: 20.w,))
       ],
     ), listener: (context, state) {
       if (state is CalendarUpdateState) {

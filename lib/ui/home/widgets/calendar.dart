@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_defualt_project/bloc/calendar/calendar_bloc.dart';
+import 'package:flutter_defualt_project/bloc/to_do/to_do_bloc.dart';
 import 'package:flutter_defualt_project/utils/colors.dart';
 import 'package:flutter_defualt_project/utils/extension.dart';
 import 'package:flutter_defualt_project/utils/icons.dart';
@@ -24,29 +25,34 @@ class CustomCalendar extends StatelessWidget {
             ),
             const Spacer(),
             IconButton(
+              iconSize: 20.sp,
               splashRadius: 16.r,
               onPressed: () {
                 context
                     .read<CalendarBloc>()
                     .add(CalendarDecrementMonthEvent());
+                // context.read<ToDoBloc>().add(GetToDosByDateEvent(date: "${context.read<CalendarBloc>().year}/${context.read<CalendarBloc>().month}"));
               },
               icon: Container(
+
                 width: 25.w,
                 height: 25.w,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100.r),
                     color: AppColors.c_EFEFEF),
                 child: Center(
-                  child: SvgPicture.asset(AppIcons.arrowBack),
+                  child: SvgPicture.asset(AppIcons.arrowBack,width: 20.w,),
                 ),
               ),
             ),
             IconButton(
-              splashRadius: 16.r,
+              iconSize: 20.sp,
+              splashRadius: 20.r,
               onPressed: () {
                 context
                     .read<CalendarBloc>()
                     .add(CalendarIncrementMonthEvent());
+                // context.read<ToDoBloc>().add(GetToDosByDateEvent(date: "${context.read<CalendarBloc>().year}/${context.read<CalendarBloc>().month}"));
               },
               icon: Container(
                 width: 25.w,
@@ -55,7 +61,7 @@ class CustomCalendar extends StatelessWidget {
                     borderRadius: BorderRadius.circular(100.r),
                     color: AppColors.c_EFEFEF),
                 child: Center(
-                  child: SvgPicture.asset(AppIcons.arrowNext),
+                  child: SvgPicture.asset(AppIcons.arrowNext,width: 20.w,),
                 ),
               ),
             ),
@@ -80,6 +86,9 @@ class CustomCalendar extends StatelessWidget {
                         context.read<CalendarBloc>().add(
                             CalendarSelectDateEvent(
                                 day: int.parse(lists[i][index])));
+                        BlocProvider.of<ToDoBloc>(context).add(GetToDosByDateEvent(
+                            date:
+                            "${BlocProvider.of<CalendarBloc>(context).year}/${BlocProvider.of<CalendarBloc>(context).month}"));
                       },
                       child: Column(
                         children: [
@@ -159,18 +168,23 @@ class CustomCalendar extends StatelessWidget {
                           )
                               : Row(
                             children: [
+                              context.read<ToDoBloc>().normal.contains(lists[i][index])?
                               SvgPicture.asset(
                                 AppIcons.blueEllipse,
                                 width: 6.w,
-                              ),
+                              ): SizedBox(height: 6.w,),
                               4.pw,
+                              context.read<ToDoBloc>().urgent.contains(lists[i][index])?
                               SvgPicture.asset(
-                                  AppIcons.orangeEllipse,
-                                  width: 6.w),
+                                AppIcons.orangeEllipse,
+                                width: 6.w,
+                              ): SizedBox(height: 6.w,),
                               4.pw,
+                              context.read<ToDoBloc>().veryUrgent.contains(lists[i][index])?
                               SvgPicture.asset(
-                                  AppIcons.redEllipse,
-                                  width: 6.w),
+                                AppIcons.redEllipse,
+                                width: 6.w,
+                              ): SizedBox(height: 6.w,),
                             ],
                           ),
                           10.ph

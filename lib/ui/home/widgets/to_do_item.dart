@@ -96,7 +96,7 @@ class ToDoItem extends StatelessWidget {
                                     : AppColors.redTextColor),
                       ),
                       10.pw,
-                      toDo.location == null
+                      toDo.location!.isEmpty
                           ? const SizedBox()
                           : SvgPicture.asset(
                               AppIcons.location,
@@ -109,7 +109,7 @@ class ToDoItem extends StatelessWidget {
                                   BlendMode.srcIn),
                             ),
                       4.pw,
-                      toDo.location == null
+                      toDo.location!.isEmpty
                           ? const SizedBox()
                           : Text(
                         toDo.location!,

@@ -25,7 +25,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0,
-        systemOverlayStyle:  SystemUiOverlayStyle(statusBarColor:widget.toDo.priority == 0
+        systemOverlayStyle:  SystemUiOverlayStyle(statusBarIconBrightness: Brightness.light,statusBarColor:widget.toDo.priority == 0
             ? AppColors.blue
             : widget.toDo.priority == 1
             ? AppColors.orange
@@ -71,7 +71,7 @@ class _DetailScreenState extends State<DetailScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgPicture.asset(AppIcons.delete),
+                  SvgPicture.asset(AppIcons.delete,width: 20.w,),
                   Text("Delete Event",style: Theme.of(context).textTheme.labelLarge,)
                 ],
               ),
